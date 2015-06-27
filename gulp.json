@@ -1,0 +1,26 @@
+{
+  "app": {
+    "javascripts": {
+      "paths": [
+        "./web/bundles/app/vendor/jquery/dist/jquery.min.js",
+        "./web/bundles/app/vendor/bootstrap-sass-official/assets/javascripts/bootstrap.min.js",
+        "./web/bundles/app/js/app.js"
+      ],
+      "dist": "./web/js",
+      "inject": {
+        "base": "./src/AppBundle/Resources/views",
+        "folder":"/Layout",
+        "fileName": "/_js.footer.html.twig"
+      },
+      "async": true,
+      "bundleLocation": "./src/AppBundle/Resources/public/js/**/*.js"
+    },
+    "stylesheets": {
+      "paths": [
+        "./web/bundles/app/sass/main.scss"
+      ],
+      "dist": "./web/css",
+      "bundleLocation": "./src/AppBundle/Resources/public/sass/**/*.scss"
+    }
+  }
+}
