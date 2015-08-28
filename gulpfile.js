@@ -79,6 +79,8 @@ gulp.task('styles', function() {
         // Rename the file to respect naming covention.
         .pipe(plugins.rename(function(path){
             path.basename += '.min';
+            //add versionning
+            //path += '?v='+config.app.version;
         }))
 
         // Write to output
@@ -94,15 +96,41 @@ gulp.task('styles', function() {
 });
 
 
+/* Images
+ ========================================================================== */
+gulp.task('images', function() {
+    return gulp.src(config.app.img.src)
+        // Only optimize changed images
+        //.pipe(plugins.changed(config.dist.img))
+
+        //// Imagemin
+        //.pipe(plugins.imagemin({
+        //    optimizationLevel: 3,
+        //    progressive: true,
+        //    svgoPlugins: [{
+        //        removeViewBox: false
+        //    }]
+        //}))
+
+        // Set destination
+        .pipe(gulp.dest(config.app.img.dist))
+
+        // Show total size of images
+        .pipe(plugins.size({
+            title: 'images'
+        }));
+});
+
 /* Javascripts
  ========================================================================== */
 /* Add Async tag to script
  ========================================================================== */
 var addAsyncTag = function (filepath, file, i, length) {
+
     if(config.app.javascripts.async === 'true') {
-        return '<script src="' + filepath + '" async></script>';
+        return '<script src="'+ filepath + '" async></script>';
     } else {
-        return '<script src="' + filepath + '"></script>';
+        return '<script src="'+ filepath +'"></script>';
     }
 }
 
@@ -149,6 +177,13 @@ gulp.task('inject-scripts', ['compile:javascript'], function() {
         .pipe(gulp.dest(config.app.javascripts.inject.base + config.app.javascripts.inject.folder));
 });
 
+/* Fonts
+ ========================================================================== */
+gulp.task('fonts', function() {
+    return gulp.src(config.fonts.paths)
+        // Set destination
+        .pipe(gulp.dest(config.fonts.dist));
+});
 
 /* Browser Sync
  ========================================================================== */
@@ -172,9 +207,9 @@ gulp.task('serve:dev', ['styles','inject-scripts'], function() {
 
 // create a task that ensures the `js` task is complete before
 // reloading browsers
-gulp.task('build', function(done) {
+gulp.task('build', ['styles'], function(done) {
     runSequence(
-        ['clear-symfony-cache', 'styles', 'inject-scripts'],
+        ['cc', 'compile:javascript', 'inject-scripts'],
     done);
 });
 
@@ -187,8 +222,14 @@ gulp.task('browserSync:reload', function() {
 });
 
 // Clear symfony cache
-gulp.task('clear-symfony-cache', plugins.shell.task([
-    'rm -rf app/cache/*'
+gulp.task('cc', plugins.shell.task([
+    'rm -rf app/cache/*',
+    'sh permission-cache.sh'
+]));
+
+// OVerride validation for vendor (no other way)
+gulp.task('override', plugins.shell.task([
+    'sudo cp app/Resources/FOSCommentBundle/config/validation.xml vendor/friendsofsymfony/comment-bundle/FOS/CommentBundle/Resources/config/',
 ]));
 
 
