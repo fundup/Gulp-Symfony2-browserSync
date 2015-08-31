@@ -1,14 +1,15 @@
 # Gulp Symfony2 browserSync Sass
 Gulp for symfony 2 project with borwserSync.
+THIS PROJECT IS STILL IN DEVELOPPEMENT.
 
-##installation
+##Installation
 
 ```
 npm install;
 bower install;
 ```
 
-##presentation
+##Presentation
 Configuration of gulpfile.js is in gulp.json.
-Mai task to use it is ``gulp serve:dev``
+Main task to use it is ``gulp serve:dev``
 
