@@ -227,10 +227,5 @@ gulp.task('cc', plugins.shell.task([
     'sh permission-cache.sh'
 ]));
 
-// OVerride validation for vendor (no other way)
-gulp.task('override', plugins.shell.task([
-    'sudo cp app/Resources/FOSCommentBundle/config/validation.xml vendor/friendsofsymfony/comment-bundle/FOS/CommentBundle/Resources/config/',
-]));
-
 
 
